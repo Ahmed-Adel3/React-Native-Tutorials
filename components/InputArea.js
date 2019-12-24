@@ -1,5 +1,5 @@
 import React ,{useState}from 'react';
-import {View , TextInput,Button,StyleSheet} from 'react-native';
+import {View , TextInput,Button,StyleSheet,Modal} from 'react-native';
 
 const InputArea = props => {
     const [addedGoal,setGoal]=useState('');
@@ -7,33 +7,47 @@ const InputArea = props => {
     const onTypingGoalHandler= (item)=>{
       setGoal(item);
     }
+    const addGoalHandler=()=>{
+      props.onAddGoal(addedGoal);
+      setGoal('')
+    }
+
+
   
     return (
-    <View style={styles.container2}>
+      <Modal visible={props.visible} animationType="slide">
+        <View style={styles.container2}>
         <TextInput style={styles.input} onChangeText={onTypingGoalHandler} value={addedGoal} />
-        <Button style={styles.btn} onPress={props.onAddGoal.bind(this,addedGoal)} title="ADD" disabled={addedGoal==''} />
-    </View>)
+        <View style={styles.btns}>
+          <Button onPress={addGoalHandler} title="ADD" disabled={addedGoal==''} />
+          <Button onPress={props.onCancel} title="Cancel" color="red"/>
+        </View>
+        </View>
+      </Modal>
+)
 }
 
 const styles = StyleSheet.create({
     container2: {
       backgroundColor:'#a1a1a1',
-      flexDirection:"row",
-      padding:10
-    },
+      padding:10,
+      flex:1,
+      justifyContent:"center",
+      alignItems:"center"
+        },
     input:{
-      borderColor:"#2a2a2a",
-      marginRight:20,
+      borderColor:"#b2c4d1",
       backgroundColor:"white",
       borderWidth:1,
       borderRadius:20,
-      flex:3,
-      padding:1,
+      marginBottom:10,
+      width:300,
+      height:40
     },
-    btn:{
-      flex:1,
-      borderColor:"steelblue",
-      marginLeft:10
+    btns:{
+      flexDirection:"row", 
+      width:300,
+      justifyContent:"space-around"
     }
   });
 

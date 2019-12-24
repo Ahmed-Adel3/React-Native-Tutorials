@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { StyleSheet, Text, View,FlatList} from 'react-native';
+import { StyleSheet, Text, View,FlatList, Button} from 'react-native';
 import ListItem from './components/ListItem';
 import InputArea from './components/InputArea';
 
@@ -7,14 +7,20 @@ let goalsCount=0;
 
 export default function App() {
   const [toDoList,setToDoList]=useState([]);
+  const [isAddMode,setIsAddMode]=useState(false)
 
   const btnAddClickHandler=addedGoal=>{
     goalsCount++;  
     setToDoList(toDoList =>[...toDoList, {id:goalsCount.toString(),value:addedGoal}]);
+    setIsAddMode(false);
   }
   const btnDeleteHandler = goalId=>{
-
     return setToDoList(toDoList=>toDoList.filter(a=>a.id!==goalId ))
+  }
+
+  const cancelBtnHandler=()=>{
+    setIsAddMode(false);
+
   }
   
   return (
@@ -22,8 +28,8 @@ export default function App() {
       <View style={styles.container1}>
         <Text> To Do List</Text>
       </View>
-      
-      <InputArea onAddGoal={btnAddClickHandler}/>
+      <Button title="Add New TODO Item" onPress={()=>setIsAddMode(true)}/>
+      <InputArea onAddGoal={btnAddClickHandler} visible={isAddMode} onCancel = {cancelBtnHandler}/>
       <FlatList style={styles.container3} 
         keyExtractor={item=>item.id} 
         data={toDoList}
